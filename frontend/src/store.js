@@ -1,4 +1,9 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import {
+  legacy_createStore as createStore,
+  combineReducers,
+  applyMiddleware
+} from 'redux';
+// Because of createStore is deprecated, the new one is configureStore
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import {
