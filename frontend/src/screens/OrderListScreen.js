@@ -1,33 +1,40 @@
-import React, { useEffect } from 'react'
-import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import { listOrders, deleteOrder } from '../actions/orderActions'
+import React, { useEffect } from 'react';
+import { LinkContainer } from 'react-router-bootstrap';
+import { Table, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import Message from '../components/Message';
+import Loader from '../components/Loader';
+import { listOrders, deleteOrder } from '../actions/orderActions';
 
 const OrderListScreen = ({ history }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const orderList = useSelector((state) => state.orderList)
-  const { loading, error, orders } = orderList
+  const orderList = useSelector(state => state.orderList);
+  const { loading, error, orders } = orderList;
 
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
+  // const orderDelete = useSelector(state => state.orderDelete);
+  // const {
+  //   loading: loadingDelete,
+  //   error: errorDelete,
+  //   success: successDelete
+  // } = orderDelete;
 
-  const deleteHandler = (id) => {
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const deleteHandler = id => {
     if (window.confirm('Are you sure')) {
-      dispatch(deleteOrder(id))
+      dispatch(deleteOrder(id));
     }
-  }
+  };
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
-      dispatch(listOrders())
+      dispatch(listOrders());
     } else {
-      history.push('/login')
+      history.push('/login');
     }
-  }, [dispatch, history, userInfo])
+  }, [dispatch, history, userInfo]);
 
   return (
     <>
@@ -50,7 +57,7 @@ const OrderListScreen = ({ history }) => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
+            {orders.map(order => (
               <tr key={order._id}>
                 <td>{order._id}</td>
                 <td>{order.user && order.user.name}</td>
@@ -76,13 +83,13 @@ const OrderListScreen = ({ history }) => {
                       Details
                     </Button>
                   </LinkContainer>
-                    <Button
-                      variant='danger'
-                      className='btn-sm'
-                      onClick={() => deleteHandler(order._id)}
-                    >
-                      <i className='fas fa-trash'></i>
-                    </Button>
+                  <Button
+                    variant='danger'
+                    className='btn-sm'
+                    onClick={() => deleteHandler(order._id)}
+                  >
+                    <i className='fas fa-trash'></i>
+                  </Button>
                 </td>
               </tr>
             ))}
@@ -90,7 +97,7 @@ const OrderListScreen = ({ history }) => {
         </Table>
       )}
     </>
-  )
-}
+  );
+};
 
-export default OrderListScreen
+export default OrderListScreen;
