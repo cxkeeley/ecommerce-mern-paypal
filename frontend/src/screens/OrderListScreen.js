@@ -15,27 +15,36 @@ const OrderListScreen = ({ history }) => {
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
 
+  const orderDelete = useSelector(state => state.orderDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete
+  } = orderDelete;
+
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listOrders());
     } else {
       history.push('/login');
     }
-  }, [dispatch, history, userInfo]);
+
+    if (successDelete) {
+        dispatch(listOrders());
+    }
+  }, [dispatch, history, userInfo, successDelete]);
 
   const deleteHandler = id => {
     if (window.confirm('Are you sure')) {
-      if (dispatch(deleteOrder(id))) {
-        setTimeout(() => {
-          dispatch(listOrders());
-        }, 500);
-      }
+      dispatch(deleteOrder(id));
     }
   };
 
   return (
     <>
       <h1>Orders</h1>
+      {loadingDelete && <Loader />}
+      {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (

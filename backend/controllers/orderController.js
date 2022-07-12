@@ -125,7 +125,7 @@ const deleteOrders = asyncHandler(async (req, res) => {
     res.json({ message: 'Order removed' });
   } else {
     res.status(404);
-    throw new Error('Order not found');
+    throw new Error('Order is Paid!');
   }
 });
 
